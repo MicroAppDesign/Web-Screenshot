@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "functions": {
+    "app/api/screenshot/route.ts": {
+      "runtime": "@vercel/node@3",
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
+}

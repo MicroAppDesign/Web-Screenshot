@@ -18,9 +18,9 @@
 
 ## เทคโนโลยีที่ใช้
 
-- **Next.js 15** - Framework สำหรับ React
-- **TypeScript** - ภาษาโปรแกรมที่ปลอดภัย
-- **Tailwind CSS 3** - CSS Framework สำหรับการออกแบบ UI
+- **Next.js 16** - Framework สำหรับ React
+- **TypeScript 6** - ภาษาโปรแกรมที่ปลอดภัย
+- **Tailwind CSS 4** - CSS Framework สำหรับการออกแบบ UI (ใช้ `@import "tailwindcss";`)
 - **Puppeteer** - Library สำหรับควบคุม Chrome/Chromium
 
 ## วิธีการติดตั้ง
@@ -94,9 +94,85 @@ Web-Screenshot/
 - Node.js 18 ขึ้นไป
 - npm หรือ yarn
 
+## ใช้งานผ่าน API
+
+คุณสามารถใช้งาน API จาก Vercel ได้โดยตรง
+
+### Endpoint
+```
+POST https://web-screenshot-six.vercel.app/api/screenshot
+```
+
+### Request Body
+```json
+{
+  "url": "https://example.com",
+  "width": 1920,
+  "height": 1080,
+  "fullPage": false
+}
+```
+
+### Response
+```json
+{
+  "imageUrl": "data:image/png;base64,..."
+}
+```
+
+### ตัวอย่างการใช้งานด้วย curl
+```bash
+curl -X POST https://web-screenshot-six.vercel.app/api/screenshot \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://google.com", "width": 1280, "height": 720}'
+```
+
+## ใช้งานด้วย Local Script
+
+คุณสามารถใช้ local script เพื่อเรียก API และบันทึกภาพลงเครื่องได้เลย
+
+### ติดตั้ง dependencies
+```bash
+npm install
+```
+
+### วิธีการใช้งาน
+```bash
+# รูปแบบทั่วไป
+npm run screenshot <url> [width] [height] [fullPage] [outputPath]
+
+# ตัวอย่าง
+npm run screenshot https://google.com
+npm run screenshot https://google.com 1280 720 true my-google.png
+
+# หรือใช้ node โดยตรง
+node fetch-screenshot.cjs https://example.com
+```
+
+### Parameters
+- `url`: URL ของเว็บไซต์ที่ต้องการจับภาพ (จำเป็น)
+- `width`: ความกว้างของภาพ (ค่าเริ่มต้น: 1920)
+- `height`: ความสูงของภาพ (ค่าเริ่มต้น: 1080)
+- `fullPage`: จับภาพทั้งหน้าเว็บหรือไม่ (true/false, ค่าเริ่มต้น: false)
+- `outputPath`: ที่อยู่ไฟล์สำหรับบันทึกภาพ (ค่าเริ่มต้น: ./screenshot.png)
+
+### ใช้เป็น Module ในโค้ดของคุณ
+```javascript
+const takeScreenshot = require('./fetch-screenshot.cjs');
+
+async function myFunction() {
+  await takeScreenshot('https://example.com', {
+    width: 1280,
+    height: 720,
+    fullPage: false,
+    outputPath: './my-screenshot.png'
+  });
+}
+```
+
 ## หมายเหตุ
 
-- Puppeteer จะดาวน์โหลด Chromium อัตโนมัติเมื่อติดตั้งครั้งแรก
+- ใช้บริการ screenshot ออนไลน์ฟรีเพื่อทำงานร่วมกับ Vercel ได้ดีขึ้น
 - การจับภาพอาจใช้เวลาสักครู่ ขึ้นอยู่กับความเร็วของอินเทอร์เน็ตและขนาดของเว็บไซต์
 
 ## License
